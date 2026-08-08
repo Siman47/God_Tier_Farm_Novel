@@ -69,9 +69,25 @@ function renderMarkdown(string $markdown): array {
             $headers = parseCells($line);
             $i += 2;
             $rows = [];
-            while ($i < count($lines) && str_starts_with(trim($lines[$i]), '|')) {
-                $rows[] = parseCells($lines[$i]);
-                $i++;
+            while ($i < count($lines)) {
+                if (str_starts_with(trim($lines[$i]), '|')) {
+                    $rows[] = parseCells($lines[$i]);
+                    $i++;
+                    continue;
+                }
+
+                if (trim($lines[$i]) === '') {
+                    $nextRow = $i + 1;
+                    while ($nextRow < count($lines) && trim($lines[$nextRow]) === '') {
+                        $nextRow++;
+                    }
+                    if ($nextRow < count($lines) && str_starts_with(trim($lines[$nextRow]), '|')) {
+                        $i = $nextRow;
+                        continue;
+                    }
+                }
+
+                break;
             }
             $html .= '<div class="table-wrap"><table data-section="' . e($section) . '"><thead><tr>';
             foreach ($headers as $header) $html .= '<th>' . inlineMarkdown($header) . '</th>';
