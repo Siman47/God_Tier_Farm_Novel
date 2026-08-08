@@ -25,7 +25,7 @@ if errorlevel 1 (
 )
 
 set "HOST=127.0.0.1"
-set "PORT=8080"
+set "PORT=9999"
 set "URL=http://%HOST%:%PORT%/"
 
 echo Starting God Tier Farm Dictionary Viewer...
